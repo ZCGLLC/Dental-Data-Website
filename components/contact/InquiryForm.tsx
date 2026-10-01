@@ -68,7 +68,7 @@ export function InquiryForm() {
                   "h-10 rounded-full border px-4 text-[12px] tracking-[0.08em]",
                   selected
                     ? "border-porcelain bg-porcelain text-ink"
-                    : "border-white/15 text-porcelain",
+                    : "border-black/10 text-porcelain",
                 )}
                 aria-pressed={selected}
               >
@@ -110,7 +110,7 @@ export function InquiryForm() {
           value={values.message}
           onChange={(event) => update("message", event.target.value)}
           rows={5}
-          className="mt-2 w-full resize-y border border-white/15 bg-transparent px-4 py-3 text-sm outline-none"
+          className="mt-2 w-full resize-y border border-black/10 bg-transparent px-4 py-3 text-sm outline-none"
         />
         {errors.message ? <p className="mt-2 text-sm text-ice">{errors.message}</p> : null}
       </label>
@@ -154,7 +154,7 @@ function Field({
         value={value}
         autoComplete={autoComplete}
         onChange={(event) => onChange(event.target.value)}
-        className="mt-2 h-12 w-full border border-white/15 bg-transparent px-4 text-sm outline-none"
+        className="mt-2 h-12 w-full border border-black/10 bg-transparent px-4 text-sm outline-none"
       />
       {error ? <p className="mt-2 text-sm text-ice">{error}</p> : null}
     </label>

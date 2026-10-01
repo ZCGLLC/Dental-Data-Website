@@ -48,7 +48,7 @@ export function CursorField() {
       className="pointer-events-none fixed left-0 top-0 z-[5] h-[360px] w-[360px] rounded-full opacity-0"
       style={{
         background:
-          "radial-gradient(circle, rgba(142,197,212,0.16) 0%, rgba(142,197,212,0.04) 42%, transparent 70%)",
+          "radial-gradient(circle, rgba(29,100,120,0.09) 0%, rgba(29,100,120,0.03) 42%, transparent 70%)",
       }}
     />
   );

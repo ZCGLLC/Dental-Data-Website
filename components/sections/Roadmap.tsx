@@ -24,7 +24,7 @@ function Stack() {
       <SectionHeading eyebrow={roadmap.eyebrow} title={[...roadmap.title]} lede={roadmap.lede} />
       <ol className="mt-14 space-y-10">
         {roadmap.phases.map((phase) => (
-          <li key={phase.index} className="border-t border-white/10 pt-6">
+          <li key={phase.index} className="border-t border-black/10 pt-6">
             <Phase phase={phase} />
           </li>
         ))}
@@ -51,7 +51,7 @@ function Pinned() {
           {roadmap.phases.map((phase) => (
             <li
               key={phase.index}
-              className="w-[28rem] shrink-0 border-t border-white/15 pt-8"
+              className="w-[28rem] shrink-0 border-t border-black/10 pt-8"
             >
               <Phase phase={phase} />
             </li>

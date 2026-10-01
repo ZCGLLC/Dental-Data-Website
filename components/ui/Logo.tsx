@@ -32,7 +32,7 @@ export function Logo({
           strokeWidth="0.75"
           opacity="0.65"
         />
-        <circle cx="16" cy="16.2" r="1.15" fill="#8ec5d4" />
+        <circle cx="16" cy="16.2" r="1.15" fill="#1d6478" />
       </svg>
       {withName ? (
         <span className="text-[12px] font-medium tracking-[0.18em] uppercase">

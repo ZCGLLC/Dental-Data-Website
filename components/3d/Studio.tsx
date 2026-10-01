@@ -1,15 +1,15 @@
 "use client";
 
-import { ContactShadows, Environment, Lightformer } from "@react-three/drei";
+import { Environment, Lightformer } from "@react-three/drei";
 
 export function Studio({ quality = "high" }: { quality?: "high" | "low" }) {
   return (
     <>
-      <hemisphereLight args={["#f4f1ea", "#30343c", 0.85]} />
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[3.2, 4.5, 4]} intensity={2.4} color="#fff8f2" />
-      <directionalLight position={[-4.2, 2, 3]} intensity={1.1} color="#d5e2ec" />
-      <directionalLight position={[0.5, 1.2, -4.5]} intensity={1.6} color="#ffffff" />
+      <hemisphereLight args={["#ffffff", "#c5ccd4", 0.72]} />
+      <ambientLight intensity={0.22} />
+      <directionalLight position={[3.2, 4.5, 4]} intensity={2.1} color="#fffaf4" />
+      <directionalLight position={[-4.2, 2, 3]} intensity={0.85} color="#d5e4ee" />
+      <directionalLight position={[0.5, 1.2, -4.5]} intensity={1.35} color="#ffffff" />
       {quality === "high" ? (
         <Environment frames={1} resolution={128} environmentIntensity={0.42}>
           <Lightformer
@@ -34,16 +34,6 @@ export function Studio({ quality = "high" }: { quality?: "high" | "low" }) {
             color="#ffffff"
           />
         </Environment>
-      ) : null}
-      {quality === "high" ? (
-        <ContactShadows
-          position={[0, -1.35, 0]}
-          opacity={0.35}
-          scale={6}
-          blur={2.2}
-          far={3}
-          color="#000000"
-        />
       ) : null}
     </>
   );

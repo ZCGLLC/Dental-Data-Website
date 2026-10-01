@@ -6,7 +6,7 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 
 export function Investors({ heading = "h2" }: { heading?: "h1" | "h2" }) {
   return (
-    <section id="investors" className="border-t border-white/10 bg-ink py-28 md:py-40">
+    <section id="investors" className="border-t border-black/10 bg-ink py-28 md:py-40">
       <div className="shell">
         <Reveal>
           <SectionHeading
@@ -21,14 +21,14 @@ export function Investors({ heading = "h2" }: { heading?: "h1" | "h2" }) {
             <p className="text-[12px] tracking-[0.18em] text-silver uppercase">A platform could span</p>
             <ul className="mt-6 grid grid-cols-2 gap-4">
               {investors.spans.map((item) => (
-                <li key={item} className="border-t border-white/15 pt-3 text-lg">
+                <li key={item} className="border-t border-black/10 pt-3 text-lg">
                   {item}
                 </li>
               ))}
             </ul>
             <p className="mt-8 max-w-lg text-sm leading-7 text-silver">{investors.note}</p>
           </div>
-          <div className="border border-white/10 p-7">
+          <div className="border border-black/10 p-7">
             <p className="num text-[10px] tracking-[0.18em] text-ice uppercase">
               {investors.stageLabel}
             </p>

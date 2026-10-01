@@ -19,11 +19,11 @@ export function ImplantSchematic({
       role="img"
       aria-label="Side study of a ceramic crown, sensor layer, smart abutment, titanium implant, and bone."
     >
-      <g fill="none" stroke="#f3f0ea" strokeWidth="1.1">
+      <g fill="none" stroke="#1c2128" strokeWidth="1.1">
         <path
           d={`M140 ${78 - gap}c28 0 48 18 54 42 4 16-2 30-14 40-8 6-14 10-14 18h-52c0-8-6-12-14-18-12-10-18-24-14-40 6-24 26-42 54-42z`}
-          fill="#f4f0e8"
-          opacity="0.92"
+          fill="#efe8de"
+          opacity="0.98"
         />
         <rect
           x="112"
@@ -31,8 +31,8 @@ export function ImplantSchematic({
           width="56"
           height="16"
           rx="2"
-          fill="#132028"
-          stroke="#8ec5d4"
+          fill="#1a2228"
+          stroke="#1d6478"
         />
         <path
           d={`M122 ${196 + gap * 0.15}h36l10 62-8 18h-40l-8-18z`}
@@ -59,7 +59,7 @@ export function ImplantSchematic({
           opacity="0.9"
         />
       </g>
-      <g className="num" fill="#8ec5d4" fontSize="9" letterSpacing="1.5">
+      <g className="num" fill="#1d6478" fontSize="9" letterSpacing="1.5">
         {parts.map((part, index) => (
           <text
             key={part.id}

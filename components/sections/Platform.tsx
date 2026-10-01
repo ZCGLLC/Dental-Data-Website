@@ -4,7 +4,7 @@ import { Reveal } from "@/components/ui/Reveal";
 
 export function Platform({ heading = "h2" }: { heading?: "h1" | "h2" }) {
   return (
-    <section id="platform" className="border-t border-white/10 bg-ink py-28 md:py-40">
+    <section id="platform" className="border-t border-black/10 bg-ink py-28 md:py-40">
       <div className="shell">
         <Reveal>
           <SectionHeading
@@ -16,7 +16,7 @@ export function Platform({ heading = "h2" }: { heading?: "h1" | "h2" }) {
         </Reveal>
         <div className="mt-16 grid gap-16 lg:grid-cols-[0.9fr_1.1fr]">
           <ol className="relative space-y-0">
-            <span className="absolute top-2 bottom-2 left-[7px] w-px bg-white/15" aria-hidden="true" />
+            <span className="absolute top-2 bottom-2 left-[7px] w-px bg-black/10" aria-hidden="true" />
             {platform.flow.map((step, index) => (
               <li key={step.title} className="relative pb-10 pl-10">
                 <span className="absolute top-1.5 left-0 h-4 w-4 rounded-full border border-ice bg-ink" />
@@ -26,7 +26,7 @@ export function Platform({ heading = "h2" }: { heading?: "h1" | "h2" }) {
               </li>
             ))}
           </ol>
-          <div className="grid gap-px bg-white/10 sm:grid-cols-2">
+          <div className="grid gap-px bg-black/8 sm:grid-cols-2">
             {platform.products.map((product) => (
               <article key={product.title} className="bg-ink p-6">
                 <h3 className="text-[13px] tracking-[0.16em] uppercase">{product.title}</h3>

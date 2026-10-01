@@ -60,8 +60,8 @@ export function Problem() {
         <Reveal delay={0.1}>
           <div className="relative mx-auto aspect-[4/5] w-full max-w-md">
             <svg viewBox="0 0 360 460" className="h-full w-full" aria-hidden="true">
-              <rect width="360" height="460" fill="#090a0c" />
-              <g opacity="0.22" fill="#f3f0ea">
+              <rect width="360" height="460" fill="#f7f6f4" />
+              <g fill="#e7dfd4" stroke="#1c2128" strokeWidth="1">
                 <path d="M180 70c42 0 70 26 78 60 6 22-4 42-20 56-10 8-16 16-16 28h-84c0-12-6-20-16-28-16-14-26-34-20-56 8-34 36-60 78-60z" />
                 <rect x="150" y="214" width="60" height="18" />
                 <path d="M158 244h44l12 78-10 24h-48l-10-24z" />
@@ -74,24 +74,24 @@ export function Problem() {
                   cy="230"
                   r="82"
                   fill="none"
-                  stroke="#8ec5d4"
+                  stroke="#1d6478"
                   strokeWidth="1"
                   strokeDasharray="520"
                   strokeDashoffset={reduced ? 0 : 520}
                 />
-                <circle cx="180" cy="168" r="3" fill="#8ec5d4" />
-                <circle cx="180" cy="228" r="3" fill="#d7e4ee" />
-                <circle cx="180" cy="292" r="3" fill="#8ec5d4" />
+                <circle cx="180" cy="168" r="3" fill="#1d6478" />
+                <circle cx="180" cy="228" r="3" fill="#141618" />
+                <circle cx="180" cy="292" r="3" fill="#1d6478" />
                 <path
                   d="M180 168v124"
-                  stroke="#8ec5d4"
+                  stroke="#1d6478"
                   strokeWidth="1"
                   strokeDasharray="4 6"
                 />
                 <text
                   x="206"
                   y="172"
-                  fill="#d7e4ee"
+                  fill="#141618"
                   fontSize="11"
                   fontFamily="ui-monospace, monospace"
                 >
@@ -100,7 +100,7 @@ export function Problem() {
                 <text
                   x="206"
                   y="232"
-                  fill="#d7e4ee"
+                  fill="#141618"
                   fontSize="11"
                   fontFamily="ui-monospace, monospace"
                 >
@@ -109,7 +109,7 @@ export function Problem() {
                 <text
                   x="206"
                   y="296"
-                  fill="#d7e4ee"
+                  fill="#141618"
                   fontSize="11"
                   fontFamily="ui-monospace, monospace"
                 >

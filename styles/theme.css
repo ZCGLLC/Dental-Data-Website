@@ -1,16 +1,16 @@
 :root {
-  --ink: #070708;
-  --ink-2: #101114;
-  --charcoal: #16181c;
-  --porcelain: #f3f0ea;
-  --ceramic: #f7f5f1;
-  --titanium: #c5c8ce;
-  --silver: #9aa1aa;
-  --mist: #d7e4ee;
-  --ice: #8ec5d4;
-  --signal: #79b4c6;
-  --line: rgba(243, 240, 234, 0.12);
-  color-scheme: dark;
+  --ink: #f6f4f0;
+  --ink-2: #ffffff;
+  --charcoal: #17191c;
+  --porcelain: #141618;
+  --ceramic: #ffffff;
+  --titanium: #3c4450;
+  --silver: #66707b;
+  --mist: #d5e0e8;
+  --ice: #1d6478;
+  --signal: #2a7589;
+  --line: rgba(20, 22, 24, 0.1);
+  color-scheme: light;
 }
 
 html {
@@ -26,8 +26,8 @@ body {
 }
 
 ::selection {
-  background: #1e4d5c;
-  color: var(--porcelain);
+  background: #d5e6ee;
+  color: #141618;
 }
 
 :focus-visible {

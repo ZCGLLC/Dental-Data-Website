@@ -11,7 +11,7 @@ export function Biology() {
         className="pointer-events-none absolute inset-0 opacity-80"
         style={{
           background:
-            "radial-gradient(circle at 70% 40%, rgba(142,197,212,0.16), transparent 28%), radial-gradient(circle at 30% 70%, rgba(215,228,238,0.08), transparent 26%)",
+            "radial-gradient(circle at 70% 40%, rgba(29,100,120,0.08), transparent 32%), radial-gradient(circle at 30% 70%, rgba(20,22,24,0.03), transparent 28%)",
         }}
       />
       <div className="shell relative grid items-center gap-14 lg:grid-cols-2">
@@ -21,17 +21,19 @@ export function Biology() {
           <p className="mt-8 max-w-xl text-sm leading-7 text-silver">{brand.disclaimers.biology}</p>
         </Reveal>
         <Reveal>
-          <div className="relative border border-white/10 bg-[#0b0e11]/80 p-8">
+          <div className="relative border border-black/10 bg-white/90 p-8">
             <svg viewBox="0 0 360 280" className="mb-8 h-40 w-full" aria-hidden="true">
-              <g fill="none" stroke="#8ec5d4" strokeOpacity="0.7">
+              <g fill="none" stroke="#1d6478" strokeOpacity="0.55">
                 <ellipse cx="180" cy="140" rx="70" ry="28" />
                 <ellipse cx="180" cy="140" rx="108" ry="48" strokeOpacity="0.35" />
                 <ellipse cx="180" cy="140" rx="140" ry="70" strokeOpacity="0.2" />
               </g>
               <path
                 d="M166 86c16 0 28 10 32 24 2 8-2 16-8 20h-48c-6-4-10-12-8-20 4-14 16-24 32-24z"
-                fill="#f4f0e8"
-                opacity="0.85"
+                fill="#efe8de"
+                stroke="#1c2128"
+                strokeWidth="1"
+                opacity="0.95"
               />
               {Array.from({ length: 18 }).map((_, index) => (
                 <circle
@@ -39,14 +41,14 @@ export function Biology() {
                   cx={40 + ((index * 47) % 300)}
                   cy={30 + ((index * 29) % 220)}
                   r={index % 3 === 0 ? 2.2 : 1.2}
-                  fill="#d7e4ee"
+                  fill="#1d6478"
                   opacity={0.35 + (index % 4) * 0.1}
                 />
               ))}
             </svg>
             <ul className="space-y-4">
               {biology.areas.map((area, index) => (
-                <li key={area} className="flex items-baseline justify-between gap-6 border-b border-white/10 pb-3">
+                <li key={area} className="flex items-baseline justify-between gap-6 border-b border-black/10 pb-3">
                   <span className="num text-[10px] tracking-[0.18em] text-ice">
                     0{index + 1}
                   </span>

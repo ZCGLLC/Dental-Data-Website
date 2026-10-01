@@ -4,7 +4,7 @@ import { Logo } from "@/components/ui/Logo";
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-ink">
+    <footer className="border-t border-black/10 bg-ink">
       <div className="shell flex flex-col gap-12 py-14">
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div>

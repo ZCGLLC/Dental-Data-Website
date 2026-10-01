@@ -86,7 +86,7 @@ export function Story() {
             eager
             className="absolute inset-0"
             fallback={
-              <div className="flex h-full items-center justify-center bg-[radial-gradient(ellipse_at_center,_#1a1e24_0%,_#070708_62%)]">
+              <div className="flex h-full items-center justify-center bg-[radial-gradient(ellipse_at_center,_#ffffff_0%,_#f3f0ea_68%)]">
                 <ImplantSchematic className="h-[70%] max-w-sm" exploded />
               </div>
             }

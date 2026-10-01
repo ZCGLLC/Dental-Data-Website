@@ -49,8 +49,8 @@ export function MagneticButton({
       className={cn(
         "inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[13px] tracking-[0.08em] transition-[background-color,border-color,transform] duration-300",
         variant === "solid"
-          ? "bg-porcelain text-ink hover:bg-ceramic"
-          : "border border-white/20 bg-transparent text-porcelain hover:border-white/50",
+          ? "bg-porcelain text-ink hover:bg-[#2a2e33]"
+          : "border border-black/15 bg-transparent text-porcelain hover:border-black/40",
         className,
       )}
     >

@@ -55,7 +55,7 @@ export function StudyScene(props: {
         gl.toneMappingExposure = 1.05;
       }}
     >
-      <color attach="background" args={["#0b0c0e"]} />
+      <color attach="background" args={["#f7f6f4"]} />
       <StudyContent {...props} />
     </Canvas>
   );
