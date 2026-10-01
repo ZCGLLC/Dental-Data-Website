@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import "../styles/theme.css";
+
+@theme inline {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), Georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --color-ink: #070708;
+  --color-ink-2: #101114;
+  --color-charcoal: #16181c;
+  --color-porcelain: #f3f0ea;
+  --color-ceramic: #f7f5f1;
+  --color-titanium: #c5c8ce;
+  --color-silver: #9aa1aa;
+  --color-mist: #d7e4ee;
+  --color-ice: #8ec5d4;
+  --color-signal: #79b4c6;
+}

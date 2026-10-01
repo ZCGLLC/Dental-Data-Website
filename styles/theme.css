@@ -1,0 +1,129 @@
+:root {
+  --ink: #070708;
+  --ink-2: #101114;
+  --charcoal: #16181c;
+  --porcelain: #f3f0ea;
+  --ceramic: #f7f5f1;
+  --titanium: #c5c8ce;
+  --silver: #9aa1aa;
+  --mist: #d7e4ee;
+  --ice: #8ec5d4;
+  --signal: #79b4c6;
+  --line: rgba(243, 240, 234, 0.12);
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: auto;
+  background: var(--ink);
+}
+
+body {
+  background: var(--ink);
+  color: var(--porcelain);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #1e4d5c;
+  color: var(--porcelain);
+}
+
+:focus-visible {
+  outline: 1px solid var(--ice);
+  outline-offset: 3px;
+}
+
+section[id] {
+  scroll-margin-top: 1.25rem;
+}
+
+.shell {
+  width: min(1440px, calc(100% - 2.5rem));
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .shell {
+    width: min(1440px, calc(100% - 5rem));
+  }
+}
+
+.display {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+.eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ice);
+}
+
+.lede {
+  color: var(--titanium);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.hairline {
+  background: var(--line);
+}
+
+.num {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.signal-flow {
+  stroke-dasharray: 4 6;
+  animation: signal-flow 1.8s linear infinite;
+}
+
+.packet {
+  offset-path: path("M40 20 H280");
+  animation: packet 3.6s linear infinite;
+}
+
+@keyframes signal-flow {
+  from {
+    stroke-dashoffset: 28;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes packet {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .roadmap-pin {
+    display: none !important;
+  }
+
+  .roadmap-stack {
+    display: block !important;
+  }
+}
