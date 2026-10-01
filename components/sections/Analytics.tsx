@@ -8,11 +8,12 @@ import { demo } from "@/data/demo";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { CanvasSlot } from "@/components/3d/CanvasSlot";
+import type { RealityAxes } from "@/components/3d/RealityScene";
 import { DemoNote } from "@/components/ui/DemoNote";
 import { Metric } from "@/components/ui/Metric";
 
-const ModelStage = dynamic(
-  () => import("@/components/3d/ModelStage").then((mod) => mod.ModelStage),
+const RealityScene = dynamic(
+  () => import("@/components/3d/RealityScene").then((mod) => mod.RealityScene),
   { ssr: false },
 );
 
@@ -20,10 +21,12 @@ export function Analytics() {
   const reduced = usePrefersReducedMotion();
   const mobile = useMediaQuery("(max-width: 767px)");
   const time = useRef(0.64);
-  const [progress, setProgress] = useState(0.64);
+  const axes = useRef<RealityAxes>({ x: 0.5, y: 0.56, z: 0.42, t: 0.64, field: 0.7 });
+  const [view, setView] = useState<RealityAxes>({ x: 0.5, y: 0.56, z: 0.42, t: 0.64, field: 0.7 });
   const [playing, setPlaying] = useState(true);
-  const frame = sampleAt(progress);
-  const distribution = distributionAt(progress);
+  const frame = sampleAt(view.t);
+  const distribution = distributionAt(view.t);
+  const fieldIndex = Math.round(view.field * frame.axial);
 
   useEffect(() => {
     if (!playing || reduced) return;
@@ -33,10 +36,11 @@ export function Analytics() {
     const tick = (now: number) => {
       const delta = Math.min(0.05, (now - last) / 1000);
       last = now;
-      time.current = (time.current + delta * 0.035) % 1;
+      axes.current.t = (axes.current.t + delta * 0.035) % 1;
+      time.current = axes.current.t;
       if (now - stamp > 180) {
         stamp = now;
-        setProgress(time.current);
+        setView({ ...axes.current });
       }
       raf = requestAnimationFrame(tick);
     };
@@ -44,63 +48,108 @@ export function Analytics() {
     return () => cancelAnimationFrame(raf);
   }, [playing, reduced]);
 
-  function scrub(next: number) {
-    time.current = next;
-    setProgress(next);
-    setPlaying(false);
+  function setAxis(key: keyof RealityAxes, next: number) {
+    axes.current = { ...axes.current, [key]: next };
+    if (key === "t") {
+      time.current = next;
+      setPlaying(false);
+    }
+    setView({ ...axes.current });
   }
 
+  const axesView: Array<{
+    key: keyof RealityAxes;
+    index: string;
+    name: string;
+    value: string;
+  }> = [
+    { key: "x", index: "01", name: "Width", value: `${((view.x - 0.5) * 8).toFixed(1)} mm` },
+    { key: "y", index: "02", name: "Height", value: `${((view.y - 0.5) * 6).toFixed(1)} mm` },
+    { key: "z", index: "03", name: "Depth", value: `${(18 + view.z * 22).toFixed(0)} mm` },
+    { key: "t", index: "04", name: "Time", value: clockLabel(view.t) },
+    { key: "field", index: "05", name: "Field", value: String(fieldIndex) },
+  ];
+
   return (
-    <section id="analytics" className="border-t border-black/10 bg-[#f3f1ec] py-16 md:py-24">
-      <div className="shell">
-        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
-          <div className="max-w-3xl">
-            <p className="eyebrow">4D study</p>
-            <h2 className="display mt-4 text-[clamp(2.6rem,6vw,5.2rem)] uppercase">
-              <span className="block">A tooth.</span>
-              <span className="block">A chip.</span>
-              <span className="block">Read through time.</span>
+    <>
+    <section id="analytics" className="relative min-h-[100svh] bg-[#f3f1ec]">
+      <div
+        className="absolute inset-0"
+        role="img"
+        aria-label="A spatial study of a molar and a sensor chip inside a simulated field. Width, height, depth, time, and field can be moved."
+      >
+        <CanvasSlot
+          eager
+          className="absolute inset-0"
+          fallback={<div className="h-full bg-[#f3f1ec]" />}
+        >
+          <RealityScene axes={axes} time={time} mobile={mobile} reduced={reduced} />
+        </CanvasSlot>
+      </div>
+      <div className="pointer-events-none relative z-10 flex min-h-[100svh] flex-col justify-between px-5 pt-28 pb-6 md:px-12 md:pt-32 md:pb-10">
+        <div className="flex items-start justify-between gap-6">
+          <div className="max-w-xl">
+            <p className="eyebrow">5D reality</p>
+            <h2 className="display mt-4 text-[clamp(2.8rem,6.4vw,5.6rem)] uppercase">
+              <span className="block">Inside</span>
+              <span className="block">the field.</span>
             </h2>
-            <p className="lede mt-6 max-w-xl">
-              4D here means a three-dimensional model stepped across a simulated day. The tooth
-              carries load through time. The chip carries the signal that would be read from it.
-            </p>
           </div>
-          <div className="flex items-end gap-6">
-            <div>
-              <p className="num text-[10px] tracking-[0.18em] text-silver uppercase">Cursor</p>
-              <p className="num mt-2 text-3xl text-porcelain">{clockLabel(progress)}</p>
+          <button
+            type="button"
+            onClick={() => setPlaying((value) => !value)}
+            className="pointer-events-auto inline-flex h-12 items-center gap-2 rounded-full bg-porcelain px-5 text-[12px] tracking-[0.14em] text-ink uppercase"
+            aria-pressed={playing}
+          >
+            {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
+            {playing ? "Pause" : "Play"}
+          </button>
+        </div>
+        <div className="grid items-end gap-4 lg:grid-cols-[minmax(0,440px)_1fr]">
+          <div className="pointer-events-auto border border-black/10 bg-white/80 p-4 backdrop-blur-md md:p-5">
+            <p className="text-[10px] tracking-[0.18em] text-silver uppercase">Five axes · simulated</p>
+            <div className="mt-4 space-y-3">
+              {axesView.map((axis) => (
+                <label key={axis.key} className="grid grid-cols-[1.6rem_4.2rem_1fr_4.6rem] items-center gap-2">
+                  <span className="num text-[10px] text-ice">{axis.index}</span>
+                  <span className="text-[11px] tracking-[0.14em] uppercase">{axis.name}</span>
+                  <input
+                    type="range"
+                    min={0}
+                    max={1000}
+                    value={Math.round(view[axis.key] * 1000)}
+                    onChange={(event) => setAxis(axis.key, Number(event.target.value) / 1000)}
+                    className="accent-[#1d6478]"
+                    aria-valuetext={axis.value}
+                  />
+                  <span className="num text-right text-[12px]">{axis.value}</span>
+                </label>
+              ))}
             </div>
-            <button
-              type="button"
-              onClick={() => setPlaying((value) => !value)}
-              className="inline-flex h-12 items-center gap-2 rounded-full bg-porcelain px-5 text-[12px] tracking-[0.14em] text-ink uppercase"
-              aria-pressed={playing}
-            >
-              {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
-              {playing ? "Pause" : "Play"}
-            </button>
+          </div>
+          <div className="pointer-events-none hidden justify-end md:flex">
+            <div className="max-w-xs border border-black/10 bg-white/80 px-5 py-4 text-right backdrop-blur-md">
+              <p className="num text-3xl">{frame.axial} N</p>
+              <p className="mt-2 text-[11px] tracking-[0.16em] text-silver uppercase">
+                Axial · {clockLabel(view.t)}
+              </p>
+              <p className="mt-4 text-sm leading-6 text-titanium">
+                Width, height, and depth place the models. Time moves the day. Field is the simulated condition around the tooth.
+              </p>
+            </div>
           </div>
         </div>
-
-        <div className="mt-10 grid gap-px bg-black/10 lg:grid-cols-2">
-          <ModelPanel
-            title="4D tooth"
-            detail="Molar geometry, occlusal contacts, and a time ring."
-            mode="tooth"
-            time={time}
-            mobile={mobile}
-          />
-          <ModelPanel
-            title="4D chip"
-            detail="Concept die, membrane, bond pads, and a swept load trace."
-            mode="chip"
-            time={time}
-            mobile={mobile}
-          />
+      </div>
+    </section>
+    <section className="border-t border-black/10 bg-[#f3f1ec] py-16 md:py-24">
+      <div className="shell">
+        <div className="max-w-2xl">
+          <p className="eyebrow">The record</p>
+          <p className="lede mt-4">
+            The same simulated day, read as numbers. Field index {fieldIndex} is the axial load scaled by the fifth axis.
+          </p>
         </div>
-
-        <div className="grid gap-px bg-black/10 md:grid-cols-3 lg:grid-cols-6">
+        <div className="mt-10 grid gap-px bg-black/10 md:grid-cols-3 lg:grid-cols-6">
           <Readout label="Axial" value={`${frame.axial} N`} />
           <Readout label="Buccal-lingual" value={`${frame.buccal} N`} />
           <Readout label="Mesial-distal" value={`${frame.mesial} N`} />
@@ -109,20 +158,10 @@ export function Analytics() {
           <Readout label="Membrane" value={`${frame.membrane.toFixed(2)} mV`} />
         </div>
 
-        <label className="mt-px block bg-white px-5 py-4">
-          <span className="num text-[10px] tracking-[0.16em] text-silver uppercase">
-            Time axis · 24 h simulated
-          </span>
-          <input
-            type="range"
-            min={0}
-            max={1000}
-            value={Math.round(progress * 1000)}
-            onChange={(event) => scrub(Number(event.target.value) / 1000)}
-            className="mt-3 w-full accent-[#1d6478]"
-            aria-valuetext={clockLabel(progress)}
-          />
-        </label>
+        <div className="mt-px grid gap-px bg-black/10 md:grid-cols-2">
+          <Readout label="Field index" value={String(fieldIndex)} />
+          <Readout label="Time" value={clockLabel(view.t)} />
+        </div>
 
         <div className="mt-px grid gap-px bg-black/10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
           {ledger.map((item) => (
@@ -145,7 +184,7 @@ export function Analytics() {
                 ))}
               </ul>
             </div>
-            <ChannelChart progress={progress} />
+            <ChannelChart progress={view.t} />
           </div>
           <div className="bg-white p-5 md:p-6">
             <p className="text-[12px] tracking-[0.16em] text-silver uppercase">Load share</p>
@@ -178,53 +217,7 @@ export function Analytics() {
         </div>
       </div>
     </section>
-  );
-}
-
-function ModelPanel({
-  title,
-  detail,
-  mode,
-  time,
-  mobile,
-}: {
-  title: string;
-  detail: string;
-  mode: "tooth" | "chip";
-  time: React.RefObject<number>;
-  mobile: boolean;
-}) {
-  return (
-    <article className="bg-[#f7f6f4]">
-      <div className="flex items-start justify-between gap-4 px-5 pt-5">
-        <div>
-          <h3 className="text-[12px] tracking-[0.18em] uppercase">{title}</h3>
-          <p className="mt-2 max-w-xs text-sm leading-6 text-titanium">{detail}</p>
-        </div>
-        <p className="num text-[10px] tracking-[0.16em] text-ice uppercase">Model</p>
-      </div>
-      <div
-        className="relative mt-4 h-[340px] md:h-[460px]"
-        role="img"
-        aria-label={title}
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(20,22,24,0.045) 1px, transparent 1px), linear-gradient(to bottom, rgba(20,22,24,0.045) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      >
-        <CanvasSlot
-          className="absolute inset-0"
-          fallback={
-            <div className="flex h-full items-center justify-center text-[11px] tracking-[0.18em] text-silver uppercase">
-              {title}
-            </div>
-          }
-        >
-          <ModelStage mode={mode} time={time} mobile={mobile} />
-        </CanvasSlot>
-      </div>
-    </article>
+    </>
   );
 }
 
