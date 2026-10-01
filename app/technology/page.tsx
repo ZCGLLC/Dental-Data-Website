@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { technologyPage } from "@/data/content";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { TechnologyStudy } from "@/components/sections/TechnologyStudy";
+import { Analytics } from "@/components/sections/Analytics";
 import { Sensors } from "@/components/sections/Sensors";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function TechnologyPage() {
         />
       </div>
       <TechnologyStudy />
+      <Analytics />
       <Sensors />
     </main>
   );
