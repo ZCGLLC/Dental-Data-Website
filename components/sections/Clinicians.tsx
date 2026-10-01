@@ -4,7 +4,7 @@ import { Reveal } from "@/components/ui/Reveal";
 
 export function Clinicians({ heading = "h2" }: { heading?: "h1" | "h2" }) {
   return (
-    <section id="clinicians" className="border-t border-white/10 bg-ink py-28 md:py-40">
+    <section id="clinicians" className="border-t border-black/10 bg-ink py-28 md:py-40">
       <div className="shell">
         <Reveal>
           <SectionHeading
@@ -18,7 +18,7 @@ export function Clinicians({ heading = "h2" }: { heading?: "h1" | "h2" }) {
             clinical benefits.
           </p>
         </Reveal>
-        <div className="mt-16 grid gap-px bg-white/10 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid gap-px bg-black/8 md:grid-cols-2 lg:grid-cols-3">
           {clinicians.goals.map((goal, index) => (
             <article key={goal.title} className="bg-ink p-7">
               <p className="num text-[10px] tracking-[0.18em] text-ice">0{index + 1}</p>

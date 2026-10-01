@@ -26,7 +26,7 @@ export function TechnologyStudy() {
   return (
     <section className="bg-ink pb-24">
       <div className="shell grid gap-8 lg:grid-cols-[1fr_320px]">
-        <div className="relative min-h-[520px] border border-white/10 bg-[#0b0c0e] md:min-h-[680px]">
+        <div className="relative min-h-[520px] border border-black/10 bg-white md:min-h-[680px]">
           <CanvasSlot
             className="absolute inset-0"
             fallback={<ImplantSchematic className="p-8" exploded />}
@@ -63,7 +63,7 @@ export function TechnologyStudy() {
                 explode.current = value;
                 setAmount(value);
               }}
-              className="mt-3 w-full accent-[#8ec5d4]"
+              className="mt-3 w-full accent-[#1d6478]"
             />
           </label>
           <ul className="mt-8 space-y-2">
@@ -77,7 +77,7 @@ export function TechnologyStudy() {
                     setActive(next);
                   }}
                   className={cn(
-                    "w-full border-b border-white/10 py-3 text-left",
+                    "w-full border-b border-black/10 py-3 text-left",
                     active === item.id ? "text-porcelain" : "text-silver",
                   )}
                 >
@@ -96,7 +96,7 @@ export function TechnologyStudy() {
       </div>
       <div className="shell mt-16 grid gap-8 md:grid-cols-2">
         {technologyPage.points.map((point) => (
-          <article key={point.title} className="border-t border-white/10 pt-5">
+          <article key={point.title} className="border-t border-black/10 pt-5">
             <h2 className="text-2xl">{point.title}</h2>
             <p className="mt-3 text-sm leading-7 text-titanium">{point.text}</p>
           </article>

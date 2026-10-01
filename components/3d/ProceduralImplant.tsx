@@ -106,8 +106,8 @@ export function ProceduralImplant({
         <mesh rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[0.29, 0.006, 8, 48]} />
           <meshStandardMaterial
-            color="#9fd0de"
-            emissive="#67a8ba"
+            color="#1d6478"
+            emissive="#1d6478"
             emissiveIntensity={wire ? 0 : 0.8}
             roughness={0.3}
             metalness={0.2}
@@ -117,20 +117,20 @@ export function ProceduralImplant({
         {[0, 2.2, 4.2].map((angle) => (
           <mesh key={angle} position={[Math.cos(angle) * 0.29, 0, Math.sin(angle) * 0.29]}>
             <sphereGeometry args={[0.018, 10, 10]} />
-            <meshBasicMaterial color="#d7eef4" />
+            <meshBasicMaterial color="#d7eef4" toneMapped={false} />
           </mesh>
         ))}
       </group>
 
       <group ref={abutment} position={[0, STACK.abutment, 0]} {...bind("abutment")}>
         <mesh geometry={abutmentGeometry} castShadow>
-          <TitaniumMaterial wire={wire} color="#b4bac3" />
+          <TitaniumMaterial wire={wire} color="#8e97a3" />
         </mesh>
       </group>
 
       <group ref={implant} position={[0, STACK.implant, 0]} {...bind("implant")}>
         <mesh geometry={implantGeometry} castShadow>
-          <TitaniumMaterial wire={wire} color="#aeb6bf" />
+          <TitaniumMaterial wire={wire} color="#7d8793" />
         </mesh>
         {Array.from({ length: 9 }).map((_, index) => {
           const t = index / 8;
@@ -139,7 +139,7 @@ export function ProceduralImplant({
           return (
             <mesh key={y} position={[0, y, 0]} rotation={[Math.PI / 2, 0, 0]}>
               <torusGeometry args={[radius, 0.012, 6, 28]} />
-              <TitaniumMaterial wire={wire} color="#c5ccd4" />
+              <TitaniumMaterial wire={wire} color="#a8b0ba" />
             </mesh>
           );
         })}

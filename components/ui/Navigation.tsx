@@ -69,7 +69,7 @@ export function Navigation() {
           className={cn(
             "mx-auto flex h-14 items-center justify-between gap-4 px-4 transition-all duration-500 md:h-16 md:px-6",
             scrolled || open
-              ? "rounded-full border border-white/10 bg-[#0c0d10]/75 backdrop-blur-md md:px-5"
+              ? "rounded-full border border-black/10 bg-white/75 backdrop-blur-md md:px-5"
               : "border border-transparent bg-transparent",
           )}
         >
@@ -100,7 +100,7 @@ export function Navigation() {
             </Link>
             <button
               type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-porcelain xl:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 text-porcelain xl:hidden"
               aria-expanded={open}
               aria-controls="mobile-nav"
               onClick={() => setOpenPath(open ? null : pathname)}

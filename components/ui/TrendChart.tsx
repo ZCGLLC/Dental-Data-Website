@@ -34,8 +34,8 @@ export function TrendChart({
         aria-label={label}
         onMouseLeave={() => setHover(null)}
       >
-        <polygon points={area} fill="#8ec5d4" opacity="0.12" />
-        <polyline points={line} fill="none" stroke="#8ec5d4" strokeWidth="1.6" />
+        <polygon points={area} fill="#1d6478" opacity="0.08" />
+        <polyline points={line} fill="none" stroke="#1d6478" strokeWidth="1.4" />
         {points.map((point, index) => (
           <rect
             key={index}
@@ -47,7 +47,7 @@ export function TrendChart({
             onMouseEnter={() => setHover(index)}
           />
         ))}
-        {active ? <circle cx={active.x} cy={active.y} r="3.5" fill="#f3f0ea" /> : null}
+        {active ? <circle cx={active.x} cy={active.y} r="3.5" fill="#141618" /> : null}
       </svg>
       <p className="num mt-2 text-xs text-silver">
         {active ? `${active.value} N` : ""} · simulated

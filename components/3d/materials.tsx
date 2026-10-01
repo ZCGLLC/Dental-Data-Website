@@ -5,14 +5,14 @@ import type { MeshPhysicalMaterial } from "three";
 export function CeramicMaterial({ wire = false }: { wire?: boolean }) {
   if (wire) {
     return (
-      <meshBasicMaterial color="#d5e7ef" wireframe transparent opacity={0.55} />
+      <meshBasicMaterial color="#1d6478" wireframe transparent opacity={0.72} />
     );
   }
   return (
     <meshPhysicalMaterial
-      color="#e6e0d6"
-      metalness={0.02}
-      roughness={0.38}
+      color="#efe6da"
+      metalness={0.04}
+      roughness={0.32}
       clearcoat={0.35}
       clearcoatRoughness={0.4}
       ior={1.5}
@@ -29,7 +29,7 @@ export function TitaniumMaterial({
 }) {
   if (wire) {
     return (
-      <meshBasicMaterial color="#b7d7e3" wireframe transparent opacity={0.4} />
+      <meshBasicMaterial color="#1d6478" wireframe transparent opacity={0.5} />
     );
   }
   return (
@@ -52,7 +52,7 @@ export function SensorMaterial({
 }) {
   if (wire) {
     return (
-      <meshBasicMaterial color="#9fd4e4" wireframe transparent opacity={0.8} />
+      <meshBasicMaterial color="#1d6478" wireframe transparent opacity={0.9} />
     );
   }
   return (
@@ -72,7 +72,7 @@ export function SensorMaterial({
 export function BoneMaterial({ wire = false }: { wire?: boolean }) {
   if (wire) {
     return (
-      <meshBasicMaterial color="#d9cfc4" wireframe transparent opacity={0.28} />
+      <meshBasicMaterial color="#8d7f72" wireframe transparent opacity={0.45} />
     );
   }
   return <meshStandardMaterial color="#d4cbc2" roughness={0.86} metalness={0.02} />;

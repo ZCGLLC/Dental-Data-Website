@@ -28,8 +28,8 @@ export function Dashboard() {
           />
         </Reveal>
         <Reveal className="mt-14">
-          <div className="overflow-hidden border border-white/10 bg-[#0c0e12]">
-            <div className="flex flex-col gap-3 border-b border-white/10 px-5 py-4 md:flex-row md:items-center md:justify-between">
+          <div className="overflow-hidden border border-black/10 bg-white">
+            <div className="flex flex-col gap-3 border-b border-black/10 px-5 py-4 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="text-[11px] tracking-[0.2em] text-ice uppercase">Smart implant</p>
                 <p className="mt-1 text-sm text-porcelain">Tooth #{demo.tooth}</p>
@@ -38,7 +38,7 @@ export function Dashboard() {
                 {brand.disclaimers.dashboard}
               </p>
             </div>
-            <div className="flex gap-2 overflow-x-auto border-b border-white/10 px-4">
+            <div className="flex gap-2 overflow-x-auto border-b border-black/10 px-4">
               {tabs.map((item) => (
                 <button
                   key={item}
@@ -98,7 +98,7 @@ export function Dashboard() {
                 ) : null}
               </div>
             </div>
-            <div className="border-t border-white/10 px-5 py-3">
+            <div className="border-t border-black/10 px-5 py-3">
               <DemoNote />
             </div>
           </div>
@@ -122,7 +122,7 @@ function Stat({ label, value, live = false }: { label: string; value: string; li
 
 function BruxList() {
   return (
-    <ul className="divide-y divide-white/10">
+    <ul className="divide-y divide-black/10">
       {demo.bruxism.map((event) => (
         <li key={event.time} className="flex items-center justify-between py-3">
           <span className="num text-sm text-titanium">{event.time}</span>
@@ -145,7 +145,7 @@ function History() {
     ["Sensor history", demo.identity.readout],
   ];
   return (
-    <dl className="divide-y divide-white/10">
+    <dl className="divide-y divide-black/10">
       {rows.map(([label, value]) => (
         <div key={label} className="grid grid-cols-2 gap-4 py-3 text-sm">
           <dt className="text-silver">{label}</dt>

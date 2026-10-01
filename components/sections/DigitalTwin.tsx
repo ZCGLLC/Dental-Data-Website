@@ -30,13 +30,13 @@ export function DigitalTwin() {
   const mobile = useMediaQuery("(max-width: 767px)");
 
   return (
-    <section id="twin" className="border-t border-white/10 bg-[#08090b] py-28 md:py-36">
+    <section id="twin" className="border-t border-black/10 bg-[#f7f5f1] py-28 md:py-36">
       <div className="shell">
         <Reveal>
           <SectionHeading eyebrow={twin.eyebrow} title={[...twin.title]} lede={twin.lede} />
         </Reveal>
         <div className="mt-14 grid gap-8 lg:grid-cols-[1.4fr_0.8fr]">
-          <div className="relative min-h-[420px] border border-white/10 bg-[radial-gradient(ellipse_at_center,_#171c22_0%,_#08090b_70%)] md:min-h-[560px]">
+          <div className="relative min-h-[420px] border border-black/10 bg-[radial-gradient(ellipse_at_center,_#e6e1d8_0%,_#f7f5f1_70%)] md:min-h-[560px]">
             <div className="absolute top-4 left-4 z-10 flex gap-6 text-[10px] tracking-[0.18em] text-silver uppercase">
               <span>Physical study</span>
               <span>Holographic record</span>
@@ -54,7 +54,7 @@ export function DigitalTwin() {
             </CanvasSlot>
           </div>
           <Reveal>
-            <dl className="divide-y divide-white/10 border-y border-white/10">
+            <dl className="divide-y divide-black/10 border-y border-black/10">
               {twin.fields.map((field) => (
                 <div key={field} className="grid grid-cols-[1fr_1.1fr] gap-4 py-4">
                   <dt className="text-[12px] tracking-[0.14em] text-silver uppercase">{field}</dt>
