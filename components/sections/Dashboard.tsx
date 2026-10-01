@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { brand } from "@/config/brand";
 import { dashboardCopy } from "@/data/content";
+import { dashboardMetrics } from "@/data/analytics";
 import { demo, demoRanges } from "@/data/demo";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { DemoNote } from "@/components/ui/DemoNote";
+import { Metric } from "@/components/ui/Metric";
 import { TrendChart } from "@/components/ui/TrendChart";
 import { cn } from "@/lib/utils";
 
@@ -97,6 +99,11 @@ export function Dashboard() {
                   </div>
                 ) : null}
               </div>
+            </div>
+            <div className="grid grid-cols-2 gap-px border-t border-black/10 bg-black/10 md:grid-cols-4">
+              {dashboardMetrics.map((item) => (
+                <Metric key={item.label} label={item.label} value={item.value} note={item.note} />
+              ))}
             </div>
             <div className="border-t border-black/10 px-5 py-3">
               <DemoNote />

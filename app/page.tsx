@@ -1,4 +1,5 @@
 import { Story } from "@/components/sections/Story";
+import { Analytics } from "@/components/sections/Analytics";
 import { Problem } from "@/components/sections/Problem";
 import { Sensors } from "@/components/sections/Sensors";
 import { DigitalTwin } from "@/components/sections/DigitalTwin";
@@ -20,6 +21,7 @@ export default function HomePage() {
   return (
     <main id="main">
       <Story />
+      <Analytics />
       <Problem />
       <Sensors />
       <DigitalTwin />
