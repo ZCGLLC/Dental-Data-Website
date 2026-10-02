@@ -20,8 +20,8 @@ import { Closing } from "@/components/sections/Closing";
 export default function HomePage() {
   return (
     <main id="main">
-      <Story />
       <Analytics />
+      <Story />
       <Problem />
       <Sensors />
       <DigitalTwin />
