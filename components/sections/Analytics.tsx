@@ -89,10 +89,10 @@ export function Analytics() {
       <div className="pointer-events-none relative z-10 flex min-h-[100svh] flex-col justify-between px-5 pt-28 pb-6 md:px-12 md:pt-32 md:pb-10">
         <div className="flex items-start justify-between gap-6">
           <div className="max-w-xl">
-            <p className="eyebrow">5D reality</p>
-            <h2 className="display mt-4 text-[clamp(2.8rem,6.4vw,5.6rem)] uppercase">
-              <span className="block">Inside</span>
-              <span className="block">the field.</span>
+            <p className="eyebrow">Spatial study</p>
+            <h2 className="display mt-4 text-[clamp(3.4rem,8vw,7rem)] uppercase">
+              <span className="block">5D</span>
+              <span className="block">reality.</span>
             </h2>
           </div>
           <button
