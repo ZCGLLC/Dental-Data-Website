@@ -75,7 +75,7 @@ export function Story() {
   }
 
   return (
-    <section id="technology" ref={ref} className="relative h-[340vh] bg-ink md:h-[520vh]">
+    <section id="technology" ref={ref} className="relative h-[170vh] bg-ink md:h-[210vh]">
       <div className="sticky top-0 h-[100svh] overflow-hidden">
         <div
           className="absolute inset-0"
@@ -86,7 +86,7 @@ export function Story() {
             eager
             className="absolute inset-0"
             fallback={
-              <div className="flex h-full items-center justify-center bg-[radial-gradient(ellipse_at_center,_#ffffff_0%,_#f3f0ea_68%)]">
+              <div className="flex h-full items-center justify-center bg-[radial-gradient(ellipse_at_center,_#ffffff_0%,_#e7f2f8_68%)]">
                 <ImplantSchematic className="h-[70%] max-w-sm" exploded />
               </div>
             }

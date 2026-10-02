@@ -2,287 +2,270 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
-import { channels, clockLabel, distributionAt, ledger, sampleAt } from "@/data/analytics";
-import { demo } from "@/data/demo";
+import { brand } from "@/config/brand";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
-import { CanvasSlot } from "@/components/3d/CanvasSlot";
-import { DemoNote } from "@/components/ui/DemoNote";
-import { Metric } from "@/components/ui/Metric";
+import {
+  AbutmentBody,
+  AbutmentPocket,
+  BoneRidge,
+  CoilBond,
+  CrownSeat,
+  LayerStack,
+  MembraneDie,
+  MolarCrown,
+  ParallelScrew,
+  PremolarCrown,
+  SealedPuck,
+  TaperedScrew,
+} from "@/components/3d/StudyPieces";
 
-const ModelStage = dynamic(
-  () => import("@/components/3d/ModelStage").then((mod) => mod.ModelStage),
+const PieceScene = dynamic(
+  () => import("@/components/3d/StudyScenes").then((mod) => mod.PieceScene),
   { ssr: false },
 );
 
-export function Analytics() {
-  const reduced = usePrefersReducedMotion();
-  const mobile = useMediaQuery("(max-width: 767px)");
-  const time = useRef(0.64);
-  const [progress, setProgress] = useState(0.64);
-  const [playing, setPlaying] = useState(true);
-  const frame = sampleAt(progress);
-  const distribution = distributionAt(progress);
+const InsertionScene = dynamic(
+  () => import("@/components/3d/StudyScenes").then((mod) => mod.InsertionScene),
+  { ssr: false },
+);
+
+const sensorStages = [
+  {
+    label: "Membrane die",
+    detail: "Strain and temperature sites on one face.",
+    Piece: MembraneDie,
+  },
+  {
+    label: "Coil bond",
+    detail: "A short-range antenna joined to the die.",
+    Piece: CoilBond,
+  },
+  {
+    label: "Layer stack",
+    detail: "Ceramic base, coil, die, and lid — still apart.",
+    Piece: LayerStack,
+  },
+  {
+    label: "Sealed insert",
+    detail: "Those layers closed into one handleable insert.",
+    Piece: SealedPuck,
+  },
+] as const;
+
+const stackPieces = [
+  {
+    label: "Molar crown",
+    detail: "An occlusal form under study.",
+    Piece: MolarCrown,
+  },
+  {
+    label: "Premolar crown",
+    detail: "A smaller clinical shape.",
+    Piece: PremolarCrown,
+  },
+  {
+    label: "Crown seat",
+    detail: "The underside that closes over the insert.",
+    Piece: CrownSeat,
+  },
+  {
+    label: "Abutment",
+    detail: "The body between crown and screw.",
+    Piece: AbutmentBody,
+  },
+  {
+    label: "Abutment pocket",
+    detail: "An open well sized for the insert.",
+    Piece: AbutmentPocket,
+  },
+  {
+    label: "Parallel screw",
+    detail: "A conventional fixture shape.",
+    Piece: ParallelScrew,
+  },
+  {
+    label: "Tapered screw",
+    detail: "A second conventional fixture shape.",
+    Piece: TaperedScrew,
+  },
+  {
+    label: "Bone ridge",
+    detail: "The jaw form the screw is designed to explore.",
+    Piece: BoneRidge,
+  },
+] as const;
+
+function LiveCanvas({
+  eager = false,
+  className,
+  children,
+}: {
+  eager?: boolean;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [on, setOn] = useState(eager);
 
   useEffect(() => {
-    if (!playing || reduced) return;
-    let raf = 0;
-    let last = performance.now();
-    let stamp = last;
-    const tick = (now: number) => {
-      const delta = Math.min(0.05, (now - last) / 1000);
-      last = now;
-      time.current = (time.current + delta * 0.035) % 1;
-      if (now - stamp > 180) {
-        stamp = now;
-        setProgress(time.current);
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [playing, reduced]);
-
-  function scrub(next: number) {
-    time.current = next;
-    setProgress(next);
-    setPlaying(false);
-  }
+    const node = ref.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setOn(Boolean(entry?.isIntersecting)),
+      { rootMargin: "280px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="analytics" className="border-t border-black/10 bg-[#f3f1ec] py-16 md:py-24">
-      <div className="shell">
-        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
-          <div className="max-w-3xl">
-            <p className="eyebrow">4D study</p>
-            <h2 className="display mt-4 text-[clamp(2.6rem,6vw,5.2rem)] uppercase">
-              <span className="block">A tooth.</span>
-              <span className="block">A chip.</span>
-              <span className="block">Read through time.</span>
-            </h2>
-            <p className="lede mt-6 max-w-xl">
-              4D here means a three-dimensional model stepped across a simulated day. The tooth
-              carries load through time. The chip carries the signal that would be read from it.
-            </p>
-          </div>
-          <div className="flex items-end gap-6">
-            <div>
-              <p className="num text-[10px] tracking-[0.18em] text-silver uppercase">Cursor</p>
-              <p className="num mt-2 text-3xl text-porcelain">{clockLabel(progress)}</p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setPlaying((value) => !value)}
-              className="inline-flex h-12 items-center gap-2 rounded-full bg-porcelain px-5 text-[12px] tracking-[0.14em] text-ink uppercase"
-              aria-pressed={playing}
-            >
-              {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
-              {playing ? "Pause" : "Play"}
-            </button>
-          </div>
-        </div>
-
-        <div className="mt-10 grid gap-px bg-black/10 lg:grid-cols-2">
-          <ModelPanel
-            title="4D tooth"
-            detail="Molar geometry, occlusal contacts, and a time ring."
-            mode="tooth"
-            time={time}
-            mobile={mobile}
-          />
-          <ModelPanel
-            title="4D chip"
-            detail="Concept die, membrane, bond pads, and a swept load trace."
-            mode="chip"
-            time={time}
-            mobile={mobile}
-          />
-        </div>
-
-        <div className="grid gap-px bg-black/10 md:grid-cols-3 lg:grid-cols-6">
-          <Readout label="Axial" value={`${frame.axial} N`} />
-          <Readout label="Buccal-lingual" value={`${frame.buccal} N`} />
-          <Readout label="Mesial-distal" value={`${frame.mesial} N`} />
-          <Readout label="Strain" value={`${frame.strain} µε`} />
-          <Readout label="Die temp" value={`${frame.temp.toFixed(1)}°C`} />
-          <Readout label="Membrane" value={`${frame.membrane.toFixed(2)} mV`} />
-        </div>
-
-        <label className="mt-px block bg-white px-5 py-4">
-          <span className="num text-[10px] tracking-[0.16em] text-silver uppercase">
-            Time axis · 24 h simulated
-          </span>
-          <input
-            type="range"
-            min={0}
-            max={1000}
-            value={Math.round(progress * 1000)}
-            onChange={(event) => scrub(Number(event.target.value) / 1000)}
-            className="mt-3 w-full accent-[#1d6478]"
-            aria-valuetext={clockLabel(progress)}
-          />
-        </label>
-
-        <div className="mt-px grid gap-px bg-black/10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
-          {ledger.map((item) => (
-            <Metric key={item.label} label={item.label} value={item.value} note={item.note} />
-          ))}
-        </div>
-
-        <div className="mt-px grid gap-px bg-black/10 lg:grid-cols-[1.45fr_0.85fr]">
-          <div className="bg-white p-5 md:p-6">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-[12px] tracking-[0.16em] text-silver uppercase">
-                Normalized channels
-              </p>
-              <ul className="flex flex-wrap gap-4">
-                {channels.map((channel) => (
-                  <li key={channel.id} className="flex items-center gap-2 text-[11px] text-titanium">
-                    <span className="h-px w-4" style={{ background: channel.color }} />
-                    {channel.label}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <ChannelChart progress={progress} />
-          </div>
-          <div className="bg-white p-5 md:p-6">
-            <p className="text-[12px] tracking-[0.16em] text-silver uppercase">Load share</p>
-            <ul className="mt-5 space-y-4">
-              {distribution.map((item) => (
-                <li key={item.label}>
-                  <div className="flex items-baseline justify-between text-[11px] tracking-[0.14em] uppercase">
-                    <span className="text-titanium">{item.label}</span>
-                    <span className="num text-porcelain">{item.value.toFixed(1)}%</span>
-                  </div>
-                  <div className="mt-2 h-px bg-black/10">
-                    <div className="h-px bg-ice" style={{ width: `${item.value}%` }} />
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-8 text-[12px] tracking-[0.16em] text-silver uppercase">Night log</p>
-            <ul className="mt-3 divide-y divide-black/10">
-              {demo.bruxism.map((event) => (
-                <li key={event.time} className="flex items-center justify-between py-2.5">
-                  <span className="num text-sm text-titanium">{event.time}</span>
-                  <span className="num text-sm">{event.load}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        <div className="mt-4">
-          <DemoNote />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function ModelPanel({
-  title,
-  detail,
-  mode,
-  time,
-  mobile,
-}: {
-  title: string;
-  detail: string;
-  mode: "tooth" | "chip";
-  time: React.RefObject<number>;
-  mobile: boolean;
-}) {
-  return (
-    <article className="bg-[#f7f6f4]">
-      <div className="flex items-start justify-between gap-4 px-5 pt-5">
-        <div>
-          <h3 className="text-[12px] tracking-[0.18em] uppercase">{title}</h3>
-          <p className="mt-2 max-w-xs text-sm leading-6 text-titanium">{detail}</p>
-        </div>
-        <p className="num text-[10px] tracking-[0.16em] text-ice uppercase">Model</p>
-      </div>
-      <div
-        className="relative mt-4 h-[340px] md:h-[460px]"
-        role="img"
-        aria-label={title}
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(20,22,24,0.045) 1px, transparent 1px), linear-gradient(to bottom, rgba(20,22,24,0.045) 1px, transparent 1px)",
-          backgroundSize: "32px 32px",
-        }}
-      >
-        <CanvasSlot
-          className="absolute inset-0"
-          fallback={
-            <div className="flex h-full items-center justify-center text-[11px] tracking-[0.18em] text-silver uppercase">
-              {title}
-            </div>
-          }
-        >
-          <ModelStage mode={mode} time={time} mobile={mobile} />
-        </CanvasSlot>
-      </div>
-    </article>
-  );
-}
-
-function Readout({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="bg-white px-4 py-4">
-      <p className="num text-[10px] tracking-[0.16em] text-silver uppercase">{label}</p>
-      <p className="num mt-2 text-2xl">{value}</p>
+    <div ref={ref} className={className}>
+      {on ? children : <div className="h-full bg-[#f7fbfe]" />}
     </div>
   );
 }
 
-function ChannelChart({ progress }: { progress: number }) {
-  const width = 720;
-  const height = 180;
-  const pad = 16;
+function ModelCard({
+  label,
+  detail,
+  eager = false,
+  time,
+  mobile,
+  reduced,
+  children,
+}: {
+  label: string;
+  detail: string;
+  eager?: boolean;
+  time: React.RefObject<number>;
+  mobile: boolean;
+  reduced: boolean;
+  children: React.ReactNode;
+}) {
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="h-auto w-full" role="img" aria-label="Normalized simulated channels across 24 hours">
-      {[0.25, 0.5, 0.75].map((mark) => (
-        <line
-          key={mark}
-          x1={pad}
-          x2={width - pad}
-          y1={pad + (1 - mark) * (height - pad * 2)}
-          y2={pad + (1 - mark) * (height - pad * 2)}
-          stroke="#141618"
-          strokeOpacity="0.08"
-        />
-      ))}
-      {channels.map((channel) => {
-        const min = Math.min(...channel.values);
-        const max = Math.max(...channel.values);
-        const span = max - min || 1;
-        const line = channel.values
-          .map((value, index) => {
-            const x = pad + (index / (channel.values.length - 1)) * (width - pad * 2);
-            const y = pad + (1 - (value - min) / span) * (height - pad * 2);
-            return `${x},${y}`;
-          })
-          .join(" ");
-        return (
-          <polyline
-            key={channel.id}
-            points={line}
-            fill="none"
-            stroke={channel.color}
-            strokeWidth={channel.id === "axial" ? 1.7 : 1.15}
-          />
-        );
-      })}
-      <line
-        x1={pad + progress * (width - pad * 2)}
-        x2={pad + progress * (width - pad * 2)}
-        y1={pad}
-        y2={height - pad}
-        stroke="#141618"
-        strokeWidth="1"
-      />
-    </svg>
+    <figure>
+      <LiveCanvas
+        eager={eager}
+        className="h-[220px] border border-[#d3e4ef] bg-[#f7fbfe] md:h-[260px]"
+      >
+        <PieceScene time={time} mobile={mobile} reduced={reduced}>
+          {children}
+        </PieceScene>
+      </LiveCanvas>
+      <figcaption className="mt-3">
+        <p className="text-[11px] tracking-[0.16em] text-porcelain uppercase">{label}</p>
+        <p className="mt-1 text-sm leading-6 text-titanium">{detail}</p>
+      </figcaption>
+    </figure>
+  );
+}
+
+export function Analytics() {
+  const reduced = usePrefersReducedMotion();
+  const mobile = useMediaQuery("(max-width: 767px)");
+  const time = useRef(0.08);
+
+  useEffect(() => {
+    if (reduced) return;
+    let raf = 0;
+    let last = performance.now();
+    const tick = (now: number) => {
+      const delta = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      time.current = (time.current + delta * 0.11) % 1;
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [reduced]);
+
+  return (
+    <section
+      id="analytics"
+      className="relative bg-[#f7fbfe] bg-[radial-gradient(ellipse_at_12%_0%,#e7f3fb_0%,transparent_46%),radial-gradient(ellipse_at_88%_30%,#e3f1f8_0%,transparent_40%)]"
+    >
+      <div className="shell pb-24 pt-28 md:pt-32">
+        <h2 className="display text-[clamp(3.4rem,7vw,6.4rem)] uppercase text-porcelain">
+          <span className="block">5D</span>
+          <span className="block">reality.</span>
+        </h2>
+        <p className="lede mt-6 max-w-xl">
+          Every piece of the restoration, each in its own model. Width, height, depth, a turning
+          day, and a pale field around the part.
+        </p>
+
+        <div id="sensor" className="mt-14">
+          <p className="eyebrow">Sensor</p>
+          <h3 className="display mt-4 scroll-mt-28 text-[clamp(2rem,4vw,3.4rem)] uppercase text-porcelain">
+            How the insert is made.
+          </h3>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-titanium">
+            A research sequence. The die, a short-range coil, and a ceramic seal become one
+            handleable insert. The order of the parts is the study — not a fabrication recipe.
+          </p>
+          <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-4">
+            {sensorStages.map((stage) => (
+              <ModelCard
+                key={stage.label}
+                label={stage.label}
+                detail={stage.detail}
+                eager
+                time={time}
+                mobile={mobile}
+                reduced={reduced}
+              >
+                <stage.Piece />
+              </ModelCard>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-16">
+          <p className="eyebrow">Input</p>
+          <h3 className="display mt-4 scroll-mt-28 text-[clamp(2rem,4vw,3.4rem)] uppercase text-porcelain">
+            How it is seated.
+          </h3>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-titanium">
+            The insert lowers into the abutment pocket. The crown closes over it. The screw below
+            stays a conventional titanium fixture.
+          </p>
+          <LiveCanvas eager className="mt-8 h-[560px] border border-[#d3e4ef] bg-[#f7fbfe] md:h-[640px]">
+            <InsertionScene time={time} mobile={mobile} reduced={reduced} />
+          </LiveCanvas>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-titanium">
+            Open, then seated, then covered. The blue ring marks the pocket mouth. Electronics
+            stay in the crown and abutment so an osseointegrated screw can remain in place.
+          </p>
+        </div>
+
+        <div className="mt-20">
+          <p className="eyebrow">Stack</p>
+          <h3 className="display mt-4 scroll-mt-28 text-[clamp(2rem,4vw,3.4rem)] uppercase text-porcelain">
+            Every piece.
+          </h3>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-titanium">
+            Crown, abutment, screw, and bone, studied as separate models. Connection shapes are
+            generic.
+          </p>
+          <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-4">
+            {stackPieces.map((piece) => (
+              <ModelCard
+                key={piece.label}
+                label={piece.label}
+                detail={piece.detail}
+                time={time}
+                mobile={mobile}
+                reduced={reduced}
+              >
+                <piece.Piece />
+              </ModelCard>
+            ))}
+          </div>
+        </div>
+
+        <p className="mt-16 max-w-2xl text-xs leading-6 text-silver">{brand.disclaimers.science}</p>
+      </div>
+    </section>
   );
 }
