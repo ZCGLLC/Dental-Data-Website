@@ -2,9 +2,9 @@
 
 import { useLayoutEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { Environment, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
 import { sampleAt } from "@/data/analytics";
-import { Studio } from "@/components/3d/Studio";
 import { ToothModel } from "@/components/3d/ToothModel";
 import { ChipModel } from "@/components/3d/ChipModel";
 
@@ -16,20 +16,7 @@ export type RealityAxes = {
   field: number;
 };
 
-const FIELD_COUNT = 84;
-
-function Floor() {
-  const ref = useRef<THREE.GridHelper>(null);
-  useLayoutEffect(() => {
-    const material = ref.current?.material;
-    const list = Array.isArray(material) ? material : material ? [material] : [];
-    list.forEach((item) => {
-      item.transparent = true;
-      item.opacity = 0.55;
-    });
-  }, []);
-  return <gridHelper ref={ref} args={[18, 36, "#9eb0ba", "#ddd4c8"]} position={[0, -1.62, 0]} />;
-}
+const FIELD_COUNT = 64;
 
 function Field({
   axes,
@@ -89,20 +76,16 @@ function Field({
   return (
     <group>
       <mesh ref={shell}>
-        <sphereGeometry args={[1, 28, 18]} />
-        <meshBasicMaterial color="#1d6478" wireframe transparent opacity={0.28} />
+        <sphereGeometry args={[1, 24, 16]} />
+        <meshBasicMaterial color="#7eb6d4" wireframe transparent opacity={0.22} />
       </mesh>
       <mesh ref={inner}>
-        <sphereGeometry args={[1, 18, 12]} />
-        <meshBasicMaterial color="#1d6478" wireframe transparent opacity={0.14} />
-      </mesh>
-      <mesh>
-        <cylinderGeometry args={[0.004, 0.004, 2.6, 8]} />
-        <meshBasicMaterial color="#1d6478" transparent opacity={0.45} />
+        <sphereGeometry args={[1, 16, 10]} />
+        <meshBasicMaterial color="#b7d4e6" wireframe transparent opacity={0.16} />
       </mesh>
       <instancedMesh ref={cloud} args={[undefined, undefined, count]}>
         <sphereGeometry args={[1, 8, 8]} />
-        <meshBasicMaterial color="#1d6478" transparent opacity={0.7} />
+        <meshBasicMaterial color="#5aa4c4" transparent opacity={0.45} />
       </instancedMesh>
     </group>
   );
@@ -126,16 +109,16 @@ function World({
     if (!current) return;
     const px = reduced || mobile ? 0 : state.pointer.x;
     const py = reduced || mobile ? 0 : state.pointer.y;
-    const depth = mobile ? 4.8 - current.z * 1.1 : 5.5 - current.z * 2.15;
+    const depth = mobile ? 4.6 : 4.9;
     state.camera.position.x = THREE.MathUtils.damp(
       state.camera.position.x,
-      (mobile ? 0 : 0.15) + px * 0.42,
+      (mobile ? 0 : 0.15) + px * 0.28,
       2.4,
       delta,
     );
     state.camera.position.y = THREE.MathUtils.damp(
       state.camera.position.y,
-      0.42 + py * 0.28,
+      0.38 + py * 0.18,
       2.4,
       delta,
     );
@@ -149,9 +132,19 @@ function World({
 
   return (
     <>
-      <color attach="background" args={["#f3f1ec"]} />
-      <Studio quality={mobile ? "low" : "high"} />
-      <Floor />
+      <color attach="background" args={["#f7fbfe"]} />
+      <hemisphereLight args={["#ffffff", "#c5dff0", 0.95]} />
+      <ambientLight intensity={0.55} color="#f3f8fc" />
+      <directionalLight position={[4.2, 6.2, 4.5]} intensity={1.85} color="#ffffff" />
+      <directionalLight position={[-4.5, 1.6, 2.2]} intensity={1.25} color="#9ecae4" />
+      <directionalLight position={[1.2, 0.4, -4]} intensity={0.55} color="#ffffff" />
+      {mobile ? null : (
+        <Environment frames={1} resolution={64} environmentIntensity={0.28}>
+          <Lightformer form="rect" intensity={2.2} position={[0, 4, 2]} scale={[8, 3, 1]} color="#ffffff" />
+          <Lightformer form="rect" intensity={1.5} position={[-4, 1.2, 2]} scale={[4, 5, 1]} color="#c5e4f5" />
+          <Lightformer form="rect" intensity={0.8} position={[3.5, 1, -3]} scale={[3, 3, 1]} color="#ffffff" />
+        </Environment>
+      )}
       <group ref={world}>
         <group position={mobile ? [0, 0.05, 0] : [-0.15, -0.05, 0]} scale={mobile ? 0.58 : 0.74}>
           <ToothModel time={time} />
@@ -183,7 +176,7 @@ export function RealityScene({
       gl={{ antialias: !mobile, alpha: false, powerPreference: "high-performance" }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
-        gl.toneMappingExposure = 1.02;
+        gl.toneMappingExposure = 1.12;
       }}
     >
       <World axes={axes} time={time} mobile={mobile} reduced={reduced} />

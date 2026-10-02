@@ -71,7 +71,7 @@ function SceneContent({
 
   return (
     <>
-      <color attach="background" args={["#f7f6f4"]} />
+      <color attach="background" args={["#f7fbfe"]} />
       <Studio quality={mobile ? "low" : "high"} />
       <group ref={group} position={[mobile ? 0 : 0.45, mobile ? 0.55 : -0.28, 0]} scale={mobile ? 0.62 : 1}>
         <ImplantModel

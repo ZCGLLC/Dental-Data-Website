@@ -13,10 +13,10 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       root
       options={{
         autoRaf: true,
-        lerp: 0.085,
+        lerp: 0.12,
         anchors: { offset: 0 },
         smoothWheel: true,
-        wheelMultiplier: 0.9,
+        wheelMultiplier: 1.25,
         touchMultiplier: 1,
       }}
     >
