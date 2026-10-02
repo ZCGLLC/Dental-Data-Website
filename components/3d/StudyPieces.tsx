@@ -18,7 +18,7 @@ function CoolCeramic() {
 
 function Titanium() {
   return (
-    <meshPhysicalMaterial color="#8b97a6" metalness={0.62} roughness={0.32} clearcoat={0.18} />
+    <meshPhysicalMaterial color="#c5ced6" metalness={0.34} roughness={0.3} clearcoat={0.22} />
   );
 }
 
@@ -66,25 +66,33 @@ function BondWire({ a, b }: { a: [number, number, number]; b: [number, number, n
 
 export function MolarCrown() {
   const cusps: Array<[number, number, number]> = [
-    [0.18, 0.24, 0.14],
-    [-0.18, 0.24, 0.14],
-    [0.16, 0.22, -0.15],
-    [-0.17, 0.22, -0.14],
+    [0.2, 0.28, 0.16],
+    [-0.2, 0.28, 0.16],
+    [0.18, 0.26, -0.17],
+    [-0.18, 0.26, -0.16],
   ];
 
   return (
     <group scale={0.92}>
-      <mesh>
-        <sphereGeometry args={[0.46, 40, 28]} />
+      <mesh scale={[1, 0.82, 1]}>
+        <sphereGeometry args={[0.44, 40, 28]} />
         <CoolCeramic />
       </mesh>
       {cusps.map((position) => (
         <mesh key={position.join(",")} position={position}>
-          <sphereGeometry args={[0.15, 20, 16]} />
+          <sphereGeometry args={[0.16, 20, 16]} />
           <CoolCeramic />
         </mesh>
       ))}
-      <mesh position={[0, -0.32, 0]}>
+      <mesh position={[0, 0.34, 0]}>
+        <boxGeometry args={[0.52, 0.03, 0.035]} />
+        <meshStandardMaterial color="#d5dee8" roughness={0.45} />
+      </mesh>
+      <mesh position={[0, 0.34, 0]}>
+        <boxGeometry args={[0.035, 0.03, 0.42]} />
+        <meshStandardMaterial color="#d5dee8" roughness={0.45} />
+      </mesh>
+      <mesh position={[0, -0.3, 0]}>
         <cylinderGeometry args={[0.24, 0.18, 0.14, 28]} />
         <CoolCeramic />
       </mesh>
@@ -113,17 +121,17 @@ export function PremolarCrown() {
 
 export function CrownSeat() {
   return (
-    <group rotation={[0.55, 0.35, 0]} scale={1.05}>
-      <mesh rotation={[Math.PI, 0, 0]}>
-        <sphereGeometry args={[0.5, 40, 22, 0, Math.PI * 2, 0, Math.PI * 0.46]} />
+    <group rotation={[1.05, 0.4, 0]} scale={1.12}>
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.4, 0.11, 18, 42]} />
         <CoolCeramic />
       </mesh>
-      <mesh position={[0, 0.02, 0]}>
-        <cylinderGeometry args={[0.2, 0.24, 0.14, 28]} />
+      <mesh position={[0, -0.12, 0]}>
+        <sphereGeometry args={[0.3, 28, 18, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
         <Pocket />
       </mesh>
-      <mesh position={[0, 0.09, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.3, 0.012, 8, 40]} />
+      <mesh position={[0, 0.02, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.26, 0.014, 8, 36]} />
         <meshBasicMaterial color="#7eb6d4" />
       </mesh>
     </group>
@@ -151,20 +159,20 @@ export function AbutmentBody() {
 
 export function AbutmentPocket() {
   return (
-    <group scale={0.95}>
-      <mesh position={[0, -0.06, 0]}>
-        <cylinderGeometry args={[0.28, 0.18, 0.52, 36]} />
+    <group rotation={[0.65, 0.35, 0]} scale={0.98}>
+      <mesh position={[0, -0.08, 0]}>
+        <cylinderGeometry args={[0.26, 0.16, 0.5, 36]} />
         <Titanium />
       </mesh>
-      <mesh position={[0, 0.26, 0]}>
-        <cylinderGeometry args={[0.3, 0.28, 0.14, 36]} />
+      <mesh position={[0, 0.24, 0]}>
+        <cylinderGeometry args={[0.32, 0.28, 0.12, 36]} />
         <Titanium />
       </mesh>
-      <mesh position={[0, 0.3, 0]}>
-        <cylinderGeometry args={[0.16, 0.16, 0.16, 28]} />
+      <mesh position={[0, 0.22, 0]}>
+        <cylinderGeometry args={[0.15, 0.15, 0.14, 28]} />
         <Pocket />
       </mesh>
-      <mesh position={[0, 0.38, 0]} rotation={[Math.PI / 2, 0, 0]}>
+      <mesh position={[0, 0.31, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.2, 0.012, 8, 36]} />
         <meshBasicMaterial color="#7eb6d4" />
       </mesh>
@@ -316,35 +324,35 @@ export function CoilBond() {
 
 export function LayerStack() {
   return (
-    <group rotation={[0.2, 0.45, 0]} scale={0.92}>
-      {[-0.24, 0.24].map((x) => (
+    <group rotation={[0.55, 0.2, 0]} scale={0.9}>
+      {[-0.22, 0.22].map((x) => (
         <mesh key={x} position={[x, 0, 0]}>
-          <cylinderGeometry args={[0.006, 0.006, 1.05, 6]} />
-          <meshBasicMaterial color="#7eb6d4" transparent opacity={0.4} />
+          <cylinderGeometry args={[0.005, 0.005, 1.15, 6]} />
+          <meshBasicMaterial color="#7eb6d4" transparent opacity={0.45} />
         </mesh>
       ))}
-      <mesh position={[0, -0.46, 0]}>
-        <cylinderGeometry args={[0.36, 0.36, 0.06, 36]} />
+      <mesh position={[0, -0.5, 0]}>
+        <cylinderGeometry args={[0.36, 0.36, 0.05, 36]} />
         <CoolCeramic />
       </mesh>
-      <mesh position={[0, -0.24, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.24, 0.02, 8, 40]} />
+      <mesh position={[0, -0.26, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.22, 0.018, 8, 40]} />
         <Gold />
       </mesh>
-      <mesh position={[0, -0.02, 0]}>
-        <boxGeometry args={[0.34, 0.06, 0.34]} />
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[0.32, 0.05, 0.32]} />
         <Silicon />
       </mesh>
-      <mesh position={[0, 0.02, 0]}>
+      <mesh position={[0, 0.035, 0]}>
         <cylinderGeometry args={[0.08, 0.08, 0.012, 24]} />
         <Membrane />
       </mesh>
-      <mesh position={[0, 0.24, 0]}>
-        <torusGeometry args={[0.28, 0.05, 12, 36]} />
+      <mesh position={[0, 0.26, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.28, 0.04, 12, 40]} />
         <CoolCeramic />
       </mesh>
-      <mesh position={[0, 0.46, 0]}>
-        <cylinderGeometry args={[0.36, 0.36, 0.05, 36]} />
+      <mesh position={[0, 0.5, 0]}>
+        <cylinderGeometry args={[0.36, 0.36, 0.045, 36]} />
         <CoolCeramic />
       </mesh>
     </group>
@@ -382,19 +390,19 @@ export function InsertionAssembly({ time }: { time: React.RefObject<number> }) {
   const ring = useRef<THREE.Mesh>(null);
 
   useFrame(() => {
-    const t = time.current ?? 0.5;
-    const seat = smoothstep(0.05, 0.32, t);
-    const close = smoothstep(0.38, 0.7, t);
-    const reset = smoothstep(0.84, 1, t);
-    const puckY = THREE.MathUtils.lerp(THREE.MathUtils.lerp(1.02, 0.2, seat), 1.02, reset);
-    const crownY = THREE.MathUtils.lerp(THREE.MathUtils.lerp(1.22, 0.4, close), 1.22, reset);
+    const t = time.current ?? 0.08;
+    const seat = smoothstep(0.05, 0.22, t);
+    const close = smoothstep(0.26, 0.4, t);
+    const reset = smoothstep(0.9, 1, t);
+    const puckY = THREE.MathUtils.lerp(THREE.MathUtils.lerp(0.66, 0.32, seat), 0.66, reset);
+    const crownY = THREE.MathUtils.lerp(THREE.MathUtils.lerp(0.92, 0.12, close), 0.92, reset);
     if (puck.current) puck.current.position.y = puckY;
     if (crown.current) crown.current.position.y = crownY;
     if (ring.current) ring.current.scale.setScalar(1 + seat * (1 - close) * 0.12);
   });
 
   return (
-    <group position={[0, -0.15, 0]} scale={0.92}>
+    <group position={[0, 0.2, 0]} scale={0.8}>
       <mesh position={[0, -0.72, 0]}>
         <cylinderGeometry args={[0.16, 0.16, 0.48, 24]} />
         <Titanium />
@@ -405,51 +413,59 @@ export function InsertionAssembly({ time }: { time: React.RefObject<number> }) {
           <Titanium />
         </mesh>
       ))}
-      <mesh position={[0, -0.05, 0]}>
-        <cylinderGeometry args={[0.28, 0.18, 0.5, 32]} />
-        <Titanium />
-      </mesh>
-      <mesh position={[0, 0.26, 0]}>
-        <cylinderGeometry args={[0.3, 0.28, 0.14, 32]} />
+      <mesh position={[0, -0.02, 0]}>
+        <cylinderGeometry args={[0.26, 0.17, 0.52, 32]} />
         <Titanium />
       </mesh>
       <mesh position={[0, 0.28, 0]}>
-        <cylinderGeometry args={[0.15, 0.15, 0.16, 28]} />
+        <cylinderGeometry args={[0.32, 0.28, 0.1, 32]} />
+        <Titanium />
+      </mesh>
+      <mesh position={[0, 0.24, 0]}>
+        <cylinderGeometry args={[0.15, 0.15, 0.12, 28]} />
         <Pocket />
       </mesh>
-      <mesh ref={ring} position={[0, 0.36, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.22, 0.012, 8, 36]} />
+      <mesh position={[0, 0.62, 0]}>
+        <cylinderGeometry args={[0.004, 0.004, 0.7, 6]} />
+        <meshBasicMaterial color="#7eb6d4" transparent opacity={0.4} />
+      </mesh>
+      <mesh ref={ring} position={[0, 0.35, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.2, 0.012, 8, 36]} />
         <meshBasicMaterial color="#5aa4c4" />
       </mesh>
       <group ref={puck}>
         <mesh>
-          <cylinderGeometry args={[0.14, 0.14, 0.09, 32]} />
-          <CoolCeramic />
+          <cylinderGeometry args={[0.18, 0.18, 0.12, 32]} />
+          <meshPhysicalMaterial color="#d5e4f0" metalness={0.08} roughness={0.32} clearcoat={0.35} />
         </mesh>
         <mesh rotation={[Math.PI / 2, 0, 0]}>
-          <torusGeometry args={[0.14, 0.008, 6, 28]} />
+          <torusGeometry args={[0.18, 0.016, 8, 32]} />
           <Gold />
         </mesh>
-        <mesh position={[0, 0.05, 0]}>
-          <cylinderGeometry args={[0.05, 0.05, 0.01, 20]} />
+        <mesh position={[0, 0.065, 0]}>
+          <cylinderGeometry args={[0.07, 0.07, 0.016, 24]} />
           <Membrane />
         </mesh>
       </group>
       <group ref={crown}>
-        <mesh position={[0, 0.28, 0]}>
-          <sphereGeometry args={[0.34, 32, 22]} />
+        <mesh position={[0, 0.08, 0]}>
+          <cylinderGeometry args={[0.32, 0.36, 0.08, 32]} />
           <CoolCeramic />
         </mesh>
-        <mesh position={[0.14, 0.48, 0.08]}>
-          <sphereGeometry args={[0.12, 16, 12]} />
+        <mesh position={[0, 0.22, 0]} scale={[1, 0.78, 1]}>
+          <sphereGeometry args={[0.26, 28, 18]} />
           <CoolCeramic />
         </mesh>
-        <mesh position={[-0.14, 0.46, 0.08]}>
-          <sphereGeometry args={[0.11, 16, 12]} />
+        <mesh position={[0.12, 0.36, 0.08]}>
+          <sphereGeometry args={[0.09, 14, 12]} />
           <CoolCeramic />
         </mesh>
-        <mesh position={[0, 0.46, -0.12]}>
-          <sphereGeometry args={[0.1, 16, 12]} />
+        <mesh position={[-0.12, 0.34, 0.08]}>
+          <sphereGeometry args={[0.08, 14, 12]} />
+          <CoolCeramic />
+        </mesh>
+        <mesh position={[0, 0.34, -0.1]}>
+          <sphereGeometry args={[0.08, 14, 12]} />
           <CoolCeramic />
         </mesh>
       </group>

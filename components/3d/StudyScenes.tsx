@@ -21,7 +21,7 @@ function FieldShell({ radius }: { radius: number }) {
   return (
     <group>
       <mesh>
-        <sphereGeometry args={[radius, 20, 14]} />
+        <sphereGeometry args={[radius, 16, 12]} />
         <meshBasicMaterial color="#7eb6d4" wireframe transparent opacity={0.2} />
       </mesh>
       <mesh>
@@ -69,9 +69,10 @@ function Turn({
 }) {
   const group = useRef<THREE.Group>(null);
 
-  useFrame((_, delta) => {
-    if (reduced || !group.current) return;
-    group.current.rotation.y += delta * 0.28;
+  useFrame((state) => {
+    if (!group.current) return;
+    const sway = reduced ? 0.4 : 0.4 + Math.sin(state.clock.elapsedTime * 0.4) * 0.38;
+    group.current.rotation.y = sway;
   });
 
   return <group ref={group}>{children}</group>;
@@ -115,12 +116,14 @@ function Stage({
   reduced,
   radius,
   dots = 0,
+  steady = false,
   children,
 }: {
   time: React.RefObject<number>;
   reduced: boolean;
   radius: number;
   dots?: number;
+  steady?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -130,7 +133,7 @@ function Stage({
       <FieldShell radius={radius} />
       {dots > 0 ? <ShadeDots radius={radius * 0.92} count={dots} /> : null}
       <TimeRing time={time} radius={radius * 0.9} />
-      <Turn reduced={reduced}>{children}</Turn>
+      {steady ? <group rotation={[0, 0.55, 0]}>{children}</group> : <Turn reduced={reduced}>{children}</Turn>}
     </>
   );
 }
@@ -164,6 +167,13 @@ export function PieceScene({
   );
 }
 
+function Aim() {
+  useFrame((state) => {
+    state.camera.lookAt(0, 0.18, 0);
+  });
+  return null;
+}
+
 export function InsertionScene({
   time,
   mobile,
@@ -175,16 +185,17 @@ export function InsertionScene({
 }) {
   return (
     <Canvas
-      camera={{ position: [1.7, 1.05, mobile ? 4.15 : 3.55], fov: mobile ? 34 : 30, near: 0.1, far: 30 }}
+      camera={{ position: [1.85, 0.55, mobile ? 6.2 : 5.5], fov: mobile ? 36 : 32, near: 0.1, far: 30 }}
       dpr={mobile ? [1, 1.15] : [1, 1.5]}
       gl={{ antialias: !mobile, alpha: false, powerPreference: "high-performance" }}
       onCreated={({ gl, camera }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
         gl.toneMappingExposure = 1.12;
-        camera.lookAt(0, 0.2, 0);
+        camera.lookAt(0, 0.18, 0);
       }}
     >
-      <Stage time={time} reduced={reduced} radius={1.65} dots={mobile ? 28 : 48}>
+      <Aim />
+      <Stage time={time} reduced={reduced} radius={1.55} dots={mobile ? 28 : 48} steady>
         <InsertionAssembly time={time} />
       </Stage>
     </Canvas>

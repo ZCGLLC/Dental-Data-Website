@@ -164,7 +164,7 @@ function ModelCard({
 export function Analytics() {
   const reduced = usePrefersReducedMotion();
   const mobile = useMediaQuery("(max-width: 767px)");
-  const time = useRef(0.5);
+  const time = useRef(0.08);
 
   useEffect(() => {
     if (reduced) return;
@@ -173,7 +173,7 @@ export function Analytics() {
     const tick = (now: number) => {
       const delta = Math.min(0.05, (now - last) / 1000);
       last = now;
-      time.current = (time.current + delta * 0.09) % 1;
+      time.current = (time.current + delta * 0.11) % 1;
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -197,7 +197,7 @@ export function Analytics() {
 
         <div id="sensor" className="mt-14">
           <p className="eyebrow">Sensor</p>
-          <h3 className="display mt-4 text-[clamp(2rem,4vw,3.4rem)] uppercase text-porcelain">
+          <h3 className="display mt-4 scroll-mt-28 text-[clamp(2rem,4vw,3.4rem)] uppercase text-porcelain">
             How the insert is made.
           </h3>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-titanium">
@@ -223,14 +223,14 @@ export function Analytics() {
 
         <div className="mt-16">
           <p className="eyebrow">Input</p>
-          <h3 className="display mt-4 text-[clamp(2rem,4vw,3.4rem)] uppercase text-porcelain">
+          <h3 className="display mt-4 scroll-mt-28 text-[clamp(2rem,4vw,3.4rem)] uppercase text-porcelain">
             How it is seated.
           </h3>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-titanium">
             The insert lowers into the abutment pocket. The crown closes over it. The screw below
             stays a conventional titanium fixture.
           </p>
-          <LiveCanvas eager className="mt-8 h-[68vh] min-h-[420px] border border-[#d3e4ef] bg-[#f7fbfe]">
+          <LiveCanvas eager className="mt-8 h-[560px] border border-[#d3e4ef] bg-[#f7fbfe] md:h-[640px]">
             <InsertionScene time={time} mobile={mobile} reduced={reduced} />
           </LiveCanvas>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-titanium">
@@ -241,7 +241,7 @@ export function Analytics() {
 
         <div className="mt-20">
           <p className="eyebrow">Stack</p>
-          <h3 className="display mt-4 text-[clamp(2rem,4vw,3.4rem)] uppercase text-porcelain">
+          <h3 className="display mt-4 scroll-mt-28 text-[clamp(2rem,4vw,3.4rem)] uppercase text-porcelain">
             Every piece.
           </h3>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-titanium">
